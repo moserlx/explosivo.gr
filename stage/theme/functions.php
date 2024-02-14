@@ -1318,7 +1318,7 @@ function thankyoupage( $order_id ) {
 		$curl = curl_init();
 
 		curl_setopt_array($curl, array(
-		   CURLOPT_URL => "http://79.129.39.169/SmartApi/api/PutDataJson?Type=order",
+		   CURLOPT_URL => "http://----/SmartApi/api/PutDataJson?Type=order",
 		   CURLOPT_RETURNTRANSFER => true,
 		   CURLOPT_ENCODING => "",
 		   CURLOPT_MAXREDIRS => 10,
@@ -1329,7 +1329,7 @@ function thankyoupage( $order_id ) {
 		   CURLOPT_POSTFIELDS => "'" . $data_string . "'",
 		   CURLOPT_HTTPHEADER => array(
 			 "Content-Type: application/json",
-			 "Authorization: Basic RXhwb2xvc2l2MDozeHBsMHMxdjAhQCM="
+			 "-----"
 		   ),
 		));
 		 
@@ -1814,7 +1814,7 @@ function send_order ($order, $order_id) {
 	$curl = curl_init();
 
 	curl_setopt_array($curl, array(
-	   CURLOPT_URL => "http://79.129.39.169/SmartApi/api/PutDataJson?Type=order",
+	   CURLOPT_URL => "-----",
 	   CURLOPT_RETURNTRANSFER => true,
 	   CURLOPT_ENCODING => "",
 	   CURLOPT_MAXREDIRS => 10,
@@ -1825,7 +1825,7 @@ function send_order ($order, $order_id) {
 	   CURLOPT_POSTFIELDS => "'" . $data_string . "'",
 	   CURLOPT_HTTPHEADER => array(
 		 "Content-Type: application/json",
-		 "Authorization: Basic RXhwb2xvc2l2MDozeHBsMHMxdjAhQCM="
+		 "-----"
 	   ),
 	));
 	 
