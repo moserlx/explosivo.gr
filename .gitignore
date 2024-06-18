@@ -31,3 +31,4 @@ node_modules/
 # ignore live site for now
 /live/wp-admin/
 /live/wp-includes/
+/live/plugins/
