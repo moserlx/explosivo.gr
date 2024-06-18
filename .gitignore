@@ -29,3 +29,5 @@ node_modules/
 .idea/
 
 # ignore live site for now
+/live/wp-admin/
+/live/wp-includes/
