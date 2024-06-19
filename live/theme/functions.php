@@ -205,18 +205,39 @@ function custom_checkout_field($checkout, $persons) {
 		$did2 = $_product->get_attribute( 'pa_departure-id-2' );
 		$did3 = $_product->get_attribute( 'pa_departure-id-3' );
 		$did4 = $_product->get_attribute( 'pa_departure-id-4' );
+		$dname1 = $_product->get_attribute( 'pa_departure-name-1' );
+		$dname2 = $_product->get_attribute( 'pa_departure-name-2' );
+		$dname3 = $_product->get_attribute( 'pa_departure-name-3' );
+		$dname4 = $_product->get_attribute( 'pa_departure-name-4' );
 
-		if ($dtime1) {
-			$allPlaces[$did1] = __('Kalamaria', 'salient') . ' ' . $dtime1; //array_push($allPlaces, __('Kalamaria', 'salient') . ' ' . $dtime1);
+		if ( $dtime1 ) {
+			if ( $dname1 ) {
+				$allPlaces[$did1] = $dname1 . ' ' . $dtime1;
+			} else {
+				$allPlaces[$did1] = __('Kalamaria', 'salient') . ' ' . $dtime1; //array_push($allPlaces, __('Kalamaria', 'salient') . ' ' . $dtime1);
+			}
 		}
-		if ($dtime2) {
-			$allPlaces[$did2] = __('City Center', 'salient') . ' ' . $dtime2;
+		if ( $dtime2 ) {
+			if ( $dname2 ) {
+				$allPlaces[$did2] = $dname2 . ' ' . $dtime2;
+			} else {
+				$allPlaces[$did2] = __('City Center', 'salient') . ' ' . $dtime2; //array_push($allPlaces, __('Kalamaria', 'salient') . ' ' . $dtime1);
+			}
 		}
-		if ($dtime3) {
-			$allPlaces[$did3] = __('One Salonica', 'salient') . ' ' . $dtime3; //array_push($allPlaces, __('One Salonica', 'salient') . ' ' . $dtime3);
+		if ( $dtime3 ) {
+			if ( $dname3 ) {
+				$allPlaces[$did3] = $dname3 . ' ' . $dtime3;
+			} else {
+				$allPlaces[$did3] = __('One Salonica', 'salient') . ' ' . $dtime3; //array_push($allPlaces, __('One Salonica', 'salient') . ' ' . $dtime3);
+			}
 		}
-		if ($dtime4) {
-			$allPlaces[$did4] = __('Litochoro', 'salient') . ' ' . $dtime4;
+		if ( $dtime4 ) {
+			if ( $dname4 ) {
+				$allPlaces[$did4] = $dname4 . ' ' . $dtime4;
+			} else {
+				$allPlaces[$did4] = __('Litochoro', 'salient') . ' ' . $dtime4;
+			}
+
 		}
 		
 		echo '<div class="custom_checkout_field"><h3>' . __('Person', 'salient') . ' ' . $index . '</h3>';
@@ -1098,11 +1119,29 @@ function product_variations_shortcode( $atts ) {
 			$html = $html . '</tr>';
 			$html = $html . '</tbody></table><table class="table-custom-mob"><tbody>';
 
-			$html = $html . '<tr><td>'.__('Departure day', 'salient').':</td><td>'. date('l d F Y', strtotime($product->get_attribute( 'pa_start-date' ))) .'</td></tr>';
-			$html = $html . '<tr><td>'.__('Kalamaria (Chilis 12)', 'salient').':</td><td>'. $product->get_attribute( 'pa_departure-time-1' ) .'</td></tr>';
-			$html = $html . '<tr><td>'.__('City center (Tsimiski 115)', 'salient').':</td><td>'. $product->get_attribute( 'pa_departure-time-2' ) .'</td></tr>';
-			$html = $html . '<tr><td>'.__('One Salonica (Koleti)', 'salient').':</td><td>'. $product->get_attribute( 'pa_departure-time-3' ) .'</td></tr>';
-			$html = $html . '<tr><td>'.__('Litochoro', 'salient').':</td><td>'. $product->get_attribute( 'pa_departure-time-4' ) .'</td></tr>';
+			$dname1 = $product->get_attribute( 'pa_departure-name-1' );
+			$dname2 = $product->get_attribute( 'pa_departure-name-2' );
+			$dname3 = $product->get_attribute( 'pa_departure-name-3' );
+			$dname4 = $product->get_attribute( 'pa_departure-name-4' );
+
+			if ( ! $dname1 ) {
+				$dname1 = __('Kalamaria (Chilis 12)', 'salient');
+			}
+			if ( ! $dname2 ) {
+				$dname2 = __('City center (Tsimiski 115)', 'salient');
+			}
+			if ( ! $dname3 ) {
+				$dname3 = __('One Salonica (Koleti)', 'salient');
+			}
+			if ( ! $dname4 ) {
+				$dname4 = __('Litochoro', 'salient');
+			}
+
+			$html = $html . '<tr><td>' . __('Departure day', 'salient') . ':</td><td>' . date('l d F Y', strtotime($product->get_attribute( 'pa_start-date' ))) . '</td></tr>';
+			$html = $html . '<tr><td>' . $dname1 . ':</td><td>' . $product->get_attribute( 'pa_departure-time-1' ) . '</td></tr>';
+			$html = $html . '<tr><td>' . $dname2 . ':</td><td>' . $product->get_attribute( 'pa_departure-time-2' ) . '</td></tr>';
+			$html = $html . '<tr><td>' . $dname3 . ':</td><td>' . $product->get_attribute( 'pa_departure-time-3' ) . '</td></tr>';
+			$html = $html . '<tr><td>' . $dname4 . ':</td><td>' . $product->get_attribute( 'pa_departure-time-4' ) . '</td></tr>';
 
 			$html = $html . '</tbody></table></div></div>';
 			//Extras
@@ -1558,17 +1597,33 @@ function misha_add_email_order_meta( $order_obj, $sent_to_admin, $plain_text ){
 			$departure_id = $order->get_meta('departure_'.$i);
 			foreach ( $order->get_items() as $item_id => $item ) {
 				$product = wc_get_product( $item->get_product_id() );
-				if ($product->get_attribute( 'pa_departure-id-1' ) && $product->get_attribute( 'pa_departure-id-1' ) == $departure_id) {
-					$departure =  '<a href="https://bit.ly/2rdgMTr">' . __('Kalamaria', 'salient') . '</a> - ' . $product->get_attribute( 'pa_departure-time-1' );
+				if ( $product->get_attribute( 'pa_departure-id-1' ) && $product->get_attribute( 'pa_departure-id-1' ) == $departure_id) {
+					if ( $product->get_attribute( 'pa_departure-name-1' ) ) {
+						$departure =  $product->get_attribute( 'pa_departure-name-1' ). ' - ' . $product->get_attribute( 'pa_departure-time-1' );
+					} else {
+						$departure =  '<a href="https://bit.ly/2rdgMTr">' . __('Kalamaria', 'salient') . '</a> - ' . $product->get_attribute( 'pa_departure-time-1' );
+					}
 				}
 				else if ($product->get_attribute( 'pa_departure-id-2' ) && $product->get_attribute( 'pa_departure-id-2' ) == $departure_id) {
-					$departure = '<a href="https://bit.ly/2OzKOcq">' . __('City Center', 'salient') . '</a> - ' . $product->get_attribute( 'pa_departure-time-2' );
+					if ( $product->get_attribute( 'pa_departure-name-2' ) ) {
+						$departure =  $product->get_attribute( 'pa_departure-name-2' ). ' - ' . $product->get_attribute( 'pa_departure-time-2' );
+					} else {
+						$departure = '<a href="https://bit.ly/2OzKOcq">' . __('City Center', 'salient') . '</a> - ' . $product->get_attribute( 'pa_departure-time-2' );
+					}
 				}
 				else if ($product->get_attribute( 'pa_departure-id-3' ) && $product->get_attribute( 'pa_departure-id-3' ) == $departure_id) {
-					$departure =  '<a href="https://goo.gl/maps/GCZomJzCxCZtd7x89">' . __('One Salonica', 'salient') . '</a> - ' . $product->get_attribute( 'pa_departure-time-3' );
+					if ( $product->get_attribute( 'pa_departure-name-3' ) ) {
+						$departure =  $product->get_attribute( 'pa_departure-name-3' ). ' - ' . $product->get_attribute( 'pa_departure-time-3' );
+					} else {
+						$departure =  '<a href="https://goo.gl/maps/GCZomJzCxCZtd7x89">' . __('One Salonica', 'salient') . '</a> - ' . $product->get_attribute( 'pa_departure-time-3' );
+					}
 				}
 				else if ($product->get_attribute( 'pa_departure-id-4' ) && $product->get_attribute( 'pa_departure-id-4' ) == $departure_id) {
-					$departure =  '<a href="https://maps.app.goo.gl/FrycGAnWJZ3PM2QL7">' . __('Litochoro', 'salient') . '</a> - ' . $product->get_attribute( 'pa_departure-time-4' );
+					if ( $product->get_attribute( 'pa_departure-name-4' ) ) {
+						$departure =  $product->get_attribute( 'pa_departure-name-4' ). ' - ' . $product->get_attribute( 'pa_departure-time-4' );
+					} else {
+						$departure =  '<a href="https://maps.app.goo.gl/FrycGAnWJZ3PM2QL7">' . __('Litochoro', 'salient') . '</a> - ' . $product->get_attribute( 'pa_departure-time-4' );
+					}
 				}
 			}
 
