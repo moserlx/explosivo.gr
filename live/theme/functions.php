@@ -1,5 +1,19 @@
 <?php
 
+/**
+ * Logs output to console
+ *
+ * @return string
+ */
+function msr_cl( $output, $with_script_tags = true ) {
+	$js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) .
+	           ');';
+	if ($with_script_tags) {
+		$js_code = '<script>' . $js_code . '</script>';
+	}
+	echo $js_code;
+}
+
 add_action( 'wp_enqueue_scripts', 'salient_child_enqueue_styles');
 function salient_child_enqueue_styles() {
 	
@@ -186,9 +200,11 @@ function custom_checkout_field($checkout, $persons) {
 		$dtime1 = $_product->get_attribute( 'pa_departure-time-1' );
 		$dtime2 = $_product->get_attribute( 'pa_departure-time-2' );
 		$dtime3 = $_product->get_attribute( 'pa_departure-time-3' );
+		$dtime4 = $_product->get_attribute( 'pa_departure-time-4' );
 		$did1 = $_product->get_attribute( 'pa_departure-id-1' );
 		$did2 = $_product->get_attribute( 'pa_departure-id-2' );
 		$did3 = $_product->get_attribute( 'pa_departure-id-3' );
+		$did4 = $_product->get_attribute( 'pa_departure-id-4' );
 
 		if ($dtime1) {
 			$allPlaces[$did1] = __('Kalamaria', 'salient') . ' ' . $dtime1; //array_push($allPlaces, __('Kalamaria', 'salient') . ' ' . $dtime1);
@@ -198,6 +214,9 @@ function custom_checkout_field($checkout, $persons) {
 		}
 		if ($dtime3) {
 			$allPlaces[$did3] = __('One Salonica', 'salient') . ' ' . $dtime3; //array_push($allPlaces, __('One Salonica', 'salient') . ' ' . $dtime3);
+		}
+		if ($dtime4) {
+			$allPlaces[$did4] = __('Litochoro', 'salient') . ' ' . $dtime4;
 		}
 		
 		echo '<div class="custom_checkout_field"><h3>' . __('Person', 'salient') . ' ' . $index . '</h3>';
@@ -1075,6 +1094,7 @@ function product_variations_shortcode( $atts ) {
 			$html = $html . '<td>'. $product->get_attribute( 'pa_departure-time-1' ) .'</td>';
 			$html = $html . '<td>'. $product->get_attribute( 'pa_departure-time-2' ) .'</td>';
 			$html = $html . '<td>'. $product->get_attribute( 'pa_departure-time-3' ) .'</td>';
+			$html = $html . '<td>'. $product->get_attribute( 'pa_departure-time-4' ) .'</td>';
 			$html = $html . '</tr>';
 			$html = $html . '</tbody></table><table class="table-custom-mob"><tbody>';
 
@@ -1082,6 +1102,7 @@ function product_variations_shortcode( $atts ) {
 			$html = $html . '<tr><td>'.__('Kalamaria (Chilis 12)', 'salient').':</td><td>'. $product->get_attribute( 'pa_departure-time-1' ) .'</td></tr>';
 			$html = $html . '<tr><td>'.__('City center (Tsimiski 115)', 'salient').':</td><td>'. $product->get_attribute( 'pa_departure-time-2' ) .'</td></tr>';
 			$html = $html . '<tr><td>'.__('One Salonica (Koleti)', 'salient').':</td><td>'. $product->get_attribute( 'pa_departure-time-3' ) .'</td></tr>';
+			$html = $html . '<tr><td>'.__('Litochoro', 'salient').':</td><td>'. $product->get_attribute( 'pa_departure-time-4' ) .'</td></tr>';
 
 			$html = $html . '</tbody></table></div></div>';
 			//Extras
@@ -1545,6 +1566,9 @@ function misha_add_email_order_meta( $order_obj, $sent_to_admin, $plain_text ){
 				}
 				else if ($product->get_attribute( 'pa_departure-id-3' ) && $product->get_attribute( 'pa_departure-id-3' ) == $departure_id) {
 					$departure =  '<a href="https://goo.gl/maps/GCZomJzCxCZtd7x89">' . __('One Salonica', 'salient') . '</a> - ' . $product->get_attribute( 'pa_departure-time-3' );
+				}
+				else if ($product->get_attribute( 'pa_departure-id-4' ) && $product->get_attribute( 'pa_departure-id-4' ) == $departure_id) {
+					$departure =  '<a href="https://maps.app.goo.gl/FrycGAnWJZ3PM2QL7">' . __('Litochoro', 'salient') . '</a> - ' . $product->get_attribute( 'pa_departure-time-4' );
 				}
 			}
 
